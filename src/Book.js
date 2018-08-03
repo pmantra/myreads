@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Book = (props) => {
+const Book = (props) => {    
     return (
         <div className="book">
             <div className="book-top">
@@ -8,7 +8,7 @@ const Book = (props) => {
                     style={{ 
                         width: 128, 
                         height: 193, 
-                        backgroundImage: props.bookInfo.backgroundImage
+                        backgroundImage: `url(${props.bookInfo.imageLinks.smallThumbnail})`
                         }}>
                 </div>
                 <div className="book-shelf-changer">
@@ -22,7 +22,13 @@ const Book = (props) => {
                 </div>
             </div>
         <div className="book-title">{props.bookInfo.title}</div>
-        <div className="book-authors">{props.bookInfo.author}</div>
+        <div className='book-authors'>
+            {props.bookInfo.authors.map(author => (
+                <div key={author}>
+                    {author}
+                </div>)
+            )}            
+        </div>
     </div>    
     )
 }

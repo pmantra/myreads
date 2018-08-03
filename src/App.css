@@ -121,10 +121,11 @@ body, .app {
 
 .book {
   width: 140px;
+  margin-right: 20px;
 }
 .book-title,
 .book-authors {
-  font-size: 0.8em;
+  font-size: 0.8em;  
 }
 .book-title {
   margin-top: 10px;
