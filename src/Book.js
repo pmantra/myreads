@@ -6,8 +6,8 @@ const Book = (props) => {
             <div className="book-top">
                 <div className="book-cover" 
                     style={{ 
-                        width: 128, 
-                        height: 193, 
+                        width: 130, 
+                        height: 170, 
                         backgroundImage: `url(${props.bookInfo.imageLinks.smallThumbnail})`
                         }}>
                 </div>
@@ -22,14 +22,21 @@ const Book = (props) => {
                 </div>
             </div>
         <div className="book-title">{props.bookInfo.title}</div>
-        <div className='book-authors'>
-            {props.bookInfo.authors.map(author => (
-                <div key={author}>
-                    {author}
-                </div>)
-            )}            
-        </div>
-    </div>    
+            {props.bookInfo.authors && 
+                <div className='book-authors'>
+                    {props.bookInfo.authors.map(author => (
+                        <div key={author}>{author}</div>)
+                    )}            
+                </div>
+            }
+            {props.bookInfo.averageRating && 
+                props.bookInfo.ratingsCount &&
+                <div className='book-authors'>                    
+                    <div>{props.bookInfo.averageRating} stars ({props.bookInfo.ratingsCount} reviews)</div>                    
+                </div>
+            }
+
+        </div>    
     )
 }
 
