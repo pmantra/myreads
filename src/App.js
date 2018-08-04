@@ -17,32 +17,29 @@ class BooksApp extends React.Component {
   }
 
   componentDidMount() {
-    this.getMyReads()
+    this.showMyReads()
   }
 
-  getMyReads = async () => {
+  /**
+   * Gets books from service and organizes each book a
+   * ccording to the shelf it belongs to
+   */
+  showMyReads = async () => {
     const myReads = await BooksAPI.getAll()
     const { shelves } = this.state
-    const newShelves = []
+    const updatedShelves = []
     for (let {display, name, books} of shelves) {
       books = this.organizeMyReadsByShelf(myReads,name)
-      const shelf = { display, name, books }
-      newShelves.push(shelf)
+      updatedShelves.push({ display, name, books })
     }
     this.setState(() => ({
-      shelves: newShelves
+      shelves: updatedShelves
     }))
   }
 
-  setBookShelf = (books) => {
-    let myReads = []
-    books.forEach(book => {
-      myReads = myReads.concat(...this.state.shelves.map(shelf => shelf.books))
-      const found = myReads.find(myRead => myRead.id === book.id)
-      book.shelf = found ? found.shelf : 'none'
-    })
-  }
-
+  /**
+   * Calls api with search query and shows search results
+   */
   searchBooks =  debounce(async (query) => {
     let searchResults = []
     if(query.trim() !== "") {
@@ -56,24 +53,49 @@ class BooksApp extends React.Component {
     }))
   },300)
 
+  /**
+   * Utility function that shows the bookshelf information
+   * of books searched
+   */
+  setBookShelf = (books) => {
+    let myReads = []
+    books.forEach(book => {
+      myReads = myReads.concat(...this.state.shelves.map(shelf => shelf.books))
+      const found = myReads.find(myRead => myRead.id === book.id)
+      book.shelf = found ? found.shelf : 'none'
+    })
+  }
+
+  /**
+   * Utility function that filters books by a given shelf
+   * @returns booksByShelfName
+   */
   organizeMyReadsByShelf = (myReads, shelf) => {
     return myReads && myReads.length > 0 ? myReads.filter(myRead => myRead.shelf === shelf) : []
   }
 
+  /**
+   * Clears the search results
+   */
   clearSearchResults = () => {
     this.setState(() => ({
       searchResults:[]
     }))
   }
 
+  /**
+   * Invoked when a book is moved from one shelf to another
+   */
   handleShelfChange = (toShelf, fromShelf, movingBook) => {
     movingBook.shelf = toShelf
+    //move book to new shelf
     const targetShelf = this.state.shelves.find(shelf => shelf.name === toShelf)
     if (targetShelf) {
       this.setState((currentState) => ({
         targetShelf: targetShelf.books.push(movingBook)
       }))
     }
+    //remove book from old shelf
     const sourceShelf = this.state.shelves.find(shelf => shelf.name === fromShelf)
     if (sourceShelf) {
       const bookIndex = sourceShelf.books.indexOf(movingBook)
@@ -81,6 +103,8 @@ class BooksApp extends React.Component {
         sourceShelf: sourceShelf.books.splice(bookIndex, 1)
       }))
     }
+    //call api
+    BooksAPI.update(movingBook,toShelf)
   }
 
   render() {
