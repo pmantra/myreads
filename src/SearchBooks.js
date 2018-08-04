@@ -23,6 +23,10 @@ class SearchBooks extends Component {
         this.props.onSearch("")     
     }    
 
+    handleShelfChange = (toShelf,fromShelf,book) => {
+        this.props.onShelfChange(toShelf,fromShelf,book)
+    }
+
     render() {
         return (            
             <div className="search-books">
@@ -54,7 +58,10 @@ class SearchBooks extends Component {
                 {this.props.searchResults && this.props.searchResults.length>0 &&
                     <ol className="books-grid">
                     {this.props.searchResults.map(book => (
-                        <Book key={book.id} bookInfo={book}
+                        <Book 
+                            key={book.id} 
+                            bookInfo={book}
+                            onShelfChange={this.handleShelfChange}
                     />
                     ))}                      
                 </ol>

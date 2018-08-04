@@ -1,43 +1,54 @@
-import React from 'react'
+import React, { Component } from 'react'
 
-const Book = (props) => {    
-    return (
-        <div className="book">
-            <div className="book-top">
-                <div className="book-cover" 
-                    style={{ 
-                        width: 130, 
-                        height: 170, 
-                        backgroundImage: `url(${props.bookInfo.imageLinks.smallThumbnail})`
-                        }}>
-                </div>
-                <div className="book-shelf-changer">
-                    <select>
-                        <option value="move" disabled>Move to...</option>
-                        <option value="currentlyReading">Currently Reading</option>
-                        <option value="wantToRead">Want to Read</option>
-                        <option value="read">Read</option>
-                        <option value="none">None</option>
-                    </select>
-                </div>
-            </div>
-        <div className="book-title">{props.bookInfo.title}</div>
-            {props.bookInfo.authors && 
-                <div className='book-authors'>
-                    {props.bookInfo.authors.map(author => (
-                        <div key={author}>{author}</div>)
-                    )}            
-                </div>
-            }
-            {props.bookInfo.averageRating && 
-                props.bookInfo.ratingsCount &&
-                <div className='book-authors'>                    
-                    <div>{props.bookInfo.averageRating} stars ({props.bookInfo.ratingsCount} reviews)</div>                    
-                </div>
-            }
+class Book extends Component {    
 
-        </div>    
-    )
+    moveToShelf = (toShelf) => {         
+        const { shelf:fromShelf } = this.props.bookInfo   
+        this.props.onShelfChange(toShelf,fromShelf,this.props.bookInfo)
+    }
+
+    render() {
+        const { bookInfo } = this.props        
+        return (
+            <div className="book">
+                <div className="book-top">
+                    <div className="book-cover" 
+                        style={{ 
+                            width: 130, 
+                            height: 170, 
+                            backgroundImage: `url(${bookInfo.imageLinks.smallThumbnail})`
+                            }}>
+                    </div>
+                    <div className="book-shelf-changer">
+                        <select 
+                            value={bookInfo.shelf}
+                            onChange={(event) => this.moveToShelf(event.target.value)}>
+                            <option value="move" disabled>Move to...</option>
+                            <option value="currentlyReading">Currently Reading</option>
+                            <option value="wantToRead">Want to Read</option>
+                            <option value="read">Read</option>
+                            <option value="none">None</option>
+                        </select>
+                    </div>
+                </div>
+                <div className="book-title">{bookInfo.title}</div>
+                {bookInfo.authors && 
+                        <div className='book-authors'>
+                            {bookInfo.authors.map(author => (
+                            <div key={author}>{author}</div>)
+                            )}            
+                        </div>
+                }
+                {bookInfo.averageRating && 
+                    bookInfo.ratingsCount &&
+                    <div className='book-authors'>                    
+                        <div>{bookInfo.averageRating} stars ({bookInfo.ratingsCount} reviews)</div>                    
+                    </div>
+                }
+    
+            </div>    
+        )
+    }    
 }
 
 export default Book
