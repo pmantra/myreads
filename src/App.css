@@ -173,3 +173,8 @@ body, .app {
   text-align: center;
   font-size: 0.8em;
 }
+
+.search-clear {
+  margin: 1vh 2vw 1vh 1vw;
+  color: #888888;
+}

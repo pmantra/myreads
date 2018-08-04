@@ -6,42 +6,45 @@ import ListBooks from './ListBooks'
 import SearchBooks from './SearchBooks'
 import debounce from 'lodash.debounce'
 
-
 class BooksApp extends React.Component {
   state = {
-    allBooks: [],
-    currentlyReading: [],
-    wantToRead: [],
-    read: []
+    searchResults:[],
+    myReads:[]
   }
 
   componentDidMount() {
-    BooksAPI.getAll()
-    .then((books) => this.prepareBookShelves(books))
+    this.getMyReads()
   }
 
-  prepareBookShelves = (books) => {
-    if(books && books.length>0) {
-      this.setState(() => ({
-        allBooks: books,        
-        currentlyReading: books.filter(book => (book.shelf==='currentlyReading')),                              
-        wantToRead: books.filter(book => (book.shelf==='wantToRead')),                         
-        read: books.filter(book => (book.shelf==='wantToRead'))              
-      }))  
-    } else {
-      this.setState(() => ({
-        allBooks: []        
-      }))  
-    }    
+  getMyReads = async () => {
+    const myReads = await BooksAPI.getAll()
+    this.setState(() => ({
+      myReads
+    }))
   }
 
-  searchBooks =  debounce((query) => {
-    if(query !== "") {
-      BooksAPI.search(query)
-      .then(results => 
-          this.prepareBookShelves(results))  
+  searchBooks =  debounce(async (query) => {    
+    let searchResults = []
+    if(query.trim() !== "") {
+      searchResults = await BooksAPI.search(query)            
     }
+    this.setState(() => ({
+      searchResults
+    }))
   },300)
+
+  organizeByShelf = (shelf) => {
+    const { myReads } = this.state
+    if(myReads && myReads.length>0) {
+      return myReads.filter(book => book.shelf===shelf)
+    }return []
+  }
+
+  clearSearchResults = () => {
+    this.setState(() => ({
+      searchResults:[]
+    }))
+  }
 
   render() {
     return (
@@ -49,19 +52,19 @@ class BooksApp extends React.Component {
         <Route exact path='/'
           render={() => (
           <ListBooks 
-            currentlyReading = {this.state.currentlyReading} 
-            wantToRead = {this.state.wantToRead} 
-            read = {this.state.read} 
+            currentlyReading={this.organizeByShelf('currentlyReading')}
+            wantToRead={this.organizeByShelf('wantToRead')}
+            read={this.organizeByShelf('read')}
           />
         )}
         />
         <Route path='/search'
           render={() => (
             <SearchBooks 
-              searchResults={this.state.allBooks}
+              searchResults={this.state.searchResults}
               onSearch={(query) => {
-              this.searchBooks(query)              
-            }}
+                this.searchBooks(query)              
+              }}              
             />    
           )}
         />  
