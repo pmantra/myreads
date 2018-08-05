@@ -34,7 +34,7 @@ class FilterBooks extends Component {
                         />
                     </div>
                 }
-                {this.state.filter===undefined &&
+                {this.state.filter==undefined &&
                     <strong>Filter Results</strong>
                 }
                 <div className="filter-by-ratings">
@@ -48,7 +48,7 @@ class FilterBooks extends Component {
                                 name="filter"
                                 type="radio"
                                 value={item.value}
-                                checked={this.state.filter===item.value}
+                                checked={this.state.filter==item.value}
                                 onChange={(event) => this.handleInputChange(event.target.value)} />
                             {item.name}
                         </label>
