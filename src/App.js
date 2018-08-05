@@ -5,6 +5,7 @@ import './App.css'
 import ListBooks from './ListBooks'
 import SearchBooks from './SearchBooks'
 import debounce from 'lodash.debounce'
+import FilterBooks from './FilterBooks'
 
 class BooksApp extends React.Component {
   state = {
@@ -13,7 +14,8 @@ class BooksApp extends React.Component {
       {display: 'Currently Reading', name: 'currentlyReading', books: []},
       {display: 'Want to Read', name: 'wantToRead', books: []},
       {display: 'Read', name: 'read', books: []}
-    ]
+    ],
+    filterCriteria: ""
   }
 
   componentDidMount() {
@@ -79,7 +81,8 @@ class BooksApp extends React.Component {
    */
   clearSearchResults = () => {
     this.setState(() => ({
-      searchResults:[]
+      searchResults: [],
+      filterCriteria: ""
     }))
   }
 
@@ -107,8 +110,14 @@ class BooksApp extends React.Component {
     BooksAPI.update(movingBook,toShelf)
   }
 
+  handleFilterCriteria = (filterCriteria) => {
+    this.setState(() => ({
+      filterCriteria
+    }))
+  }
+
   render() {
-    const { shelves } = this.state
+    const { searchResults, shelves, filterCriteria } = this.state
     return (
       <div className="app">
         <Route exact path='/'
@@ -121,13 +130,26 @@ class BooksApp extends React.Component {
         />
         <Route path='/search'
           render={() => (
-            <SearchBooks
-              searchResults={this.state.searchResults}
-              onSearch={(query) => {
-                this.searchBooks(query)
-              }}
-              onShelfChange={this.handleShelfChange}
-            />
+            <div>
+                {searchResults && searchResults.length > 0 &&
+                  <div className="filter-books">
+                    <FilterBooks
+                      onFilter={this.handleFilterCriteria}
+                    />
+                </div>
+                }
+                <div className="search-books">
+                  <SearchBooks
+                  searchResults={searchResults}
+                  filterCriteria={filterCriteria}
+                  onSearch={(query) => {
+                    this.searchBooks(query)
+                  }}
+                  onShelfChange={this.handleShelfChange}
+                  onClear={this.clearSearchResults}
+              />
+                </div>
+            </div>
           )}
         />
       </div>

@@ -4,9 +4,9 @@ import { BrowserRouter } from 'react-router-dom'
 import App from './App'
 import './index.css'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faTimes, faInfoCircle } from '@fortawesome/free-solid-svg-icons'
+import { faTimes, faInfoCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
 
-library.add({faTimes,faInfoCircle})
+library.add({faTimes,faInfoCircle,faTimesCircle})
 
 ReactDOM.render(
     <BrowserRouter>

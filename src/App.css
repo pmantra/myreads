@@ -183,3 +183,40 @@ body, .app {
   text-align: left;
   max-width: 800px !important;
 }
+
+.filter-books {
+  margin-top: 16vh;
+  margin-left: 1vw;
+  padding: 2vh 2vw 2vh 2vw;
+  display: flex;
+  float: left;
+  width: 12%;
+  height: 100%;
+  border: solid gray 1px;
+}
+
+.search-books {
+  float: left;
+  width: 85%;
+}
+
+.filter-results-container {
+  font-size: 0.8em;
+  align-items: center;
+}
+
+.filter-by-ratings {
+  margin-top: 1vh;
+  color: gray;
+}
+
+.filter-item {
+  margin-top: 1vh;
+  font-weight: bold;
+}
+
+.search-count {
+  margin-left: 5vh;
+  font-weight: bold;
+  color: gray;
+}
