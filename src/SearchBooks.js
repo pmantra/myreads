@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Book from './Book'
+import PropTypes from 'prop-types'
 
 class SearchBooks extends Component {
 
@@ -77,6 +78,14 @@ class SearchBooks extends Component {
             </div>
         )
     }
+}
+
+SearchBooks.propTypes = {
+    searchResults: PropTypes.array.isRequired,
+    filterCriteria: PropTypes.string,
+    onSearch: PropTypes.func.isRequired,
+    onClear: PropTypes.func.isRequired,
+    onShelfChange: PropTypes.func.isRequired
 }
 
 export default SearchBooks

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import ReactTooltip from 'react-tooltip'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import PropTypes from 'prop-types'
 class Book extends Component {
 
     moveToShelf = (toShelf) => {
@@ -67,6 +68,11 @@ class Book extends Component {
             </div>
         )
     }
+}
+
+Book.propTypes = {
+    bookInfo: PropTypes.object.isRequired,
+    onShelfChange: PropTypes.func.isRequired,
 }
 
 export default Book

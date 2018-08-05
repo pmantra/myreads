@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import PropTypes from 'prop-types'
 
 class FilterBooks extends Component {
 
@@ -58,6 +59,10 @@ class FilterBooks extends Component {
             </div>
         )
     }
+}
+
+FilterBooks.propTypes = {
+    onFilter: PropTypes.func.isRequired,
 }
 
 export default FilterBooks
