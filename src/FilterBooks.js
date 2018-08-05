@@ -8,6 +8,11 @@ class FilterBooks extends Component {
         filter: undefined
     }
 
+    /**
+     * pass selected average rating to filter search results
+     * back to the parent
+     * @param average rating value
+     */
     handleInputChange = (value) => {
         this.setState(() => ({
             filter: value

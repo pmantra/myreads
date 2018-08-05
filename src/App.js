@@ -41,6 +41,7 @@ class BooksApp extends React.Component {
 
   /**
    * Calls api with search query and shows search results
+   * @param query
    */
   searchBooks =  debounce(async (query) => {
     let searchResults = []
@@ -58,6 +59,7 @@ class BooksApp extends React.Component {
   /**
    * Utility function that shows the bookshelf information
    * of books searched
+   * @param books
    */
   setBookShelf = (books) => {
     let myReads = []

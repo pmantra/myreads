@@ -4,6 +4,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import PropTypes from 'prop-types'
 class Book extends Component {
 
+    /**
+     *  propogate the book info with source and target shelves
+     * all the way to the parent to keep state
+     * @param target shelf
+     */
     moveToShelf = (toShelf) => {
         const { shelf:fromShelf } = this.props.bookInfo
         this.props.onShelfChange(toShelf,fromShelf,this.props.bookInfo)
@@ -49,9 +54,7 @@ class Book extends Component {
                             <span>{bookInfo.description}</span>
                         </ReactTooltip>
                     </div>
-
                 }
-
                 {bookInfo.authors &&
                         <div className='book-authors'>
                             {bookInfo.authors.map(author => (
