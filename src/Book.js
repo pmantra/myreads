@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import ReactTooltip from 'react-tooltip'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import PropTypes from 'prop-types'
+
 class Book extends Component {
 
     /**
@@ -16,6 +17,10 @@ class Book extends Component {
 
     render() {
         const { bookInfo } = this.props
+        const imageURL = bookInfo.imageLinks && bookInfo.imageLinks.smallThumbnail
+                                                        ? bookInfo.imageLinks.smallThumbnail
+                                                        : ''
+
         return (
             <div className="book">
                 <div className="book-top">
@@ -23,7 +28,7 @@ class Book extends Component {
                         style={{
                             width: 130,
                             height: 170,
-                            backgroundImage: `url(${bookInfo.imageLinks.smallThumbnail})`
+                            backgroundImage: `url(${imageURL})`
                             }}>
                     </div>
                     <div className="book-shelf-changer">
