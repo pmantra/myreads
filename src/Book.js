@@ -19,7 +19,7 @@ class Book extends Component {
         const { bookInfo } = this.props
         const imageURL = bookInfo.imageLinks && bookInfo.imageLinks.smallThumbnail
                                                         ? bookInfo.imageLinks.smallThumbnail
-                                                        : ''
+                                                        : 'http://via.placeholder.com/128x193?text=No%20Image'
 
         return (
             <div className="book">

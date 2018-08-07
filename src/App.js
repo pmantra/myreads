@@ -1,11 +1,12 @@
 import React from 'react'
 import * as BooksAPI from './BooksAPI'
-import { Route } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 import './App.css'
 import ListBooks from './ListBooks'
 import SearchBooks from './SearchBooks'
 import debounce from 'lodash.debounce'
 import FilterBooks from './FilterBooks'
+import NoMatch from './NoMatch'
 
 class BooksApp extends React.Component {
   state = {
@@ -122,38 +123,43 @@ class BooksApp extends React.Component {
     const { searchResults, shelves, filterCriteria } = this.state
     return (
       <div className="app">
-        <Route exact path='/'
-          render={() => (
-          <ListBooks
-            shelves={shelves}
-            onShelfChange={this.handleShelfChange}
-          />
-        )}
-        />
-        <Route path='/search'
-          render={() => (
-            <div>
-                {searchResults && searchResults.length > 0 &&
-                  <div className="filter-books">
-                    <FilterBooks
-                      onFilter={this.handleFilterCriteria}
-                    />
-                </div>
-                }
-                <div className="search-books">
-                  <SearchBooks
-                  searchResults={searchResults}
-                  filterCriteria={filterCriteria}
-                  onSearch={(query) => {
-                    this.searchBooks(query)
-                  }}
-                  onShelfChange={this.handleShelfChange}
-                  onClear={this.clearSearchResults}
+      <Switch>
+          <Route exact path='/'
+              render={() => (
+              <ListBooks
+                shelves={shelves}
+                onShelfChange={this.handleShelfChange}
               />
+            )}
+          />
+          <Route path='/search'
+            render={() => (
+                <div>
+                    {searchResults && searchResults.length > 0 &&
+                      <div className="filter-books">
+                        <FilterBooks
+                          onFilter={this.handleFilterCriteria}
+                        />
+                    </div>
+                    }
+                    <div className="search-books">
+                      <SearchBooks
+                      searchResults={searchResults}
+                      filterCriteria={filterCriteria}
+                      onSearch={(query) => {
+                        this.searchBooks(query)
+                      }}
+                      onShelfChange={this.handleShelfChange}
+                      onClear={this.clearSearchResults}
+                  />
+                    </div>
                 </div>
-            </div>
-          )}
-        />
+              )}
+            />
+            <Route component={NoMatch}/>
+      </Switch>
+
+
       </div>
     )
   }
